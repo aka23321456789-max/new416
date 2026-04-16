@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aka.news.mapper.UserMapper">
+
+<!--    &lt;!&ndash; 动态 SQL 查询示例 &ndash;&gt;-->
+<!--    <select id="selectUsersByCondition" resultType="com.aka.news.pojo.entity.user">-->
+<!--        SELECT * FROM user-->
+<!--        <where>-->
+<!--            &lt;!&ndash; if 标签：条件判断 &ndash;&gt;-->
+<!--            <if test="username != null and username != ''">-->
+<!--                AND username LIKE CONCAT('%', #{username}, '%')-->
+<!--            </if>-->
+<!--            <if test="role != null">-->
+<!--                AND role = #{role}-->
+<!--            </if>-->
+<!--            <if test="minId != null">-->
+<!--                AND id >= #{minId}-->
+<!--            </if>-->
+<!--            <if test="maxId != null">-->
+<!--                AND id &lt;= #{maxId}-->
+<!--            </if>-->
+<!--            &lt;!&ndash; choose when otherwise：类似 switch-case &ndash;&gt;-->
+<!--            <choose>-->
+<!--                <when test="orderBy == 'id_desc'">-->
+<!--                    ORDER BY id DESC-->
+<!--                </when>-->
+<!--                <when test="orderBy == 'id_asc'">-->
+<!--                    ORDER BY id ASC-->
+<!--                </when>-->
+<!--                <otherwise>-->
+<!--                    ORDER BY id DESC-->
+<!--                </otherwise>-->
+<!--            </choose>-->
+<!--        </where>-->
+<!--        &lt;!&ndash; foreach 标签：遍历集合 &ndash;&gt;-->
+<!--        <if test="ids != null and ids.size() > 0">-->
+<!--            AND id IN-->
+<!--            <foreach item="id" collection="ids" open="(" separator="," close=")">-->
+<!--                #{id}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--    </select>-->
+
+</mapper>
