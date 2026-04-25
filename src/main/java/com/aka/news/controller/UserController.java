@@ -62,9 +62,19 @@ public class UserController {
             // 假设验证通过
             Map<String, Object> claims = new HashMap<>();
             claims.put("username", username);
+            claims.put("role", users.get(0).getRole());
             String token = JwtUtil.genToken(claims);
             System.out.println("Generated token: " + token);
-            return Result.success(token);//返回 token给客户端
+
+            // 构建返回数据，包含token和用户信息
+            Map<String, Object> resultData = new HashMap<>();
+            resultData.put("token", token);
+            resultData.put("username", username);
+            resultData.put("role", users.get(0).getRole());
+            resultData.put("phone", users.get(0).getPhone());
+            resultData.put("userId", users.get(0).getId());
+
+            return Result.success(resultData);//返回 token和用户信息给客户端
 
         } catch (Exception e) {
             System.out.println("Login error: " + e.getMessage());

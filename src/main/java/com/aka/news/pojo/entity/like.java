@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
-@TableName("like")
+@TableName("user_like")
 @AllArgsConstructor
 @NoArgsConstructor
-public class like {//点赞
-    private int id;
-    private String username;//点赞者
-    private String math;//数量
+public class like {
+    private Integer id;
+    private Integer userId;
+    private Integer newsId;
+    private LocalDateTime createTime;
 }

@@ -62,6 +62,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
+import { loginApi } from '../api/NewsApi'
 import { generateCaptcha, validateCaptcha } from '../utils/captcha'
 
 const router = useRouter()
@@ -78,6 +79,9 @@ const refreshCaptcha = () => {
 }
 
 const handleLogin = async () => {
+  console.log('开始登录流程')
+  console.log('表单数据:', form)
+  
   // 验证验证码
   if (!validateCaptcha(form.captcha, captcha.value)) {
     auth.setError('验证码错误')
@@ -86,10 +90,16 @@ const handleLogin = async () => {
   }
   
   try {
-    await auth.login(form)
+    console.log('调用auth.login方法')
+    // 使用auth store的login方法
+    await auth.login({
+      username: form.username,
+      password: form.password
+    })
+    console.log('登录成功，准备跳转到首页')
     router.push('/')
   } catch (error) {
-    // 错误已在store中处理
+    console.log('登录失败，错误:', error)
     refreshCaptcha()
   }
 }
