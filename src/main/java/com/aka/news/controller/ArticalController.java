@@ -88,6 +88,7 @@ public class ArticalController {
                 }
                 // 添加点赞数、收藏数、评论数
                 newsItem.setLikeCount(likeService.getLikeCountByNewsId(newsItem.getId()));
+
                 newsItem.setFavoriteCount(favoriteService.getFavoriteCountByNewsId(newsItem.getId()));
                 newsItem.setCommentCount(commentService.getCommentCountByNewsId(newsItem.getId()));
             }
