@@ -61,11 +61,6 @@ export const updateUserApi = (userData) => {
   return api.put('/user/update', userData)
 }
 
-// 添加新闻API
-export const addNewsApi = (newsData) => {
-  return api.post('/artical/add', newsData)
-}
-
 // 获取新闻列表API（支持分页）
 // 注意：size由后端决定，前端只传page
 export const getNewsListApi = (page = 1) => {
@@ -176,6 +171,12 @@ export const getNewsByCategoryApi = (category) => {
 // 删除新闻
 export const deleteNewsApi = (newsId) => {
   return api.delete(`/artical/delete/${newsId}`)
+}
+
+// ==================== 新闻编辑API ====================
+// 编辑新闻
+export const updateNewsApi = (newsId, newsData) => {
+  return api.put(`/artical/update/${newsId}`, newsData)
 }
 
 export default api

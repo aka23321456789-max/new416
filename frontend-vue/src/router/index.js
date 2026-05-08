@@ -3,12 +3,11 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import ProfileView from '../views/ProfileView.vue'
-import AddNewsView from '../views/AddNewsView.vue'
 import NewsListView from '../views/NewsListView.vue'
 import AdminNewsView from '../views/AdminNewsView.vue'
 import NewsDetailView from '../views/NewsDetailView.vue'
-import MyNewsView from '../views/MyNewsView.vue'
 import FavoritesView from '../views/FavoritesView.vue'
+import MyNewsView from '../views/MyNewsView.vue'
 import { useAuthStore } from '../store/auth'
 
 const routes = [
@@ -31,14 +30,6 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/upload',
-    name: 'upload',
-    component: AddNewsView,
     meta: {
       requiresAuth: true
     }

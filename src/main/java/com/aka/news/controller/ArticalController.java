@@ -32,38 +32,6 @@ public class ArticalController {
     @Autowired
     private CommentService commentService;
 
-    //添加文章
-    @PostMapping("/add")
-    public Result addArtical(@RequestBody news news1){
-        try{
-            //添加文章
-            Map<String, Object> map = ThreadLocalUtil.get();
-            String username = (String) map.get("username");
-            user u1 = userService.getOne(new QueryWrapper<user>().eq("username", username));//查询用户
-            if(u1 == null){
-                return Result.fail("用户不存在，请重新登录");
-            }
-
-            // 检查权限：只有发布者(role=2)和管理员(role=3)可以发布新闻
-            int role = u1.getRole();
-            if (role != 2 && role != 3) {
-                return Result.fail("您没有权限发布新闻");
-            }
-
-            news1.setAuthorId(u1.getId());//设置作者ID
-            news1.setStatus(0);//默认状态为审核中
-            news1.setViewCount(0);//初始阅读量为0
-
-            articalService.save(news1);
-
-            return Result.success();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return Result.fail("操作错误: " + e.getMessage());
-        }
-    }
-
     //获取新闻列表（支持分页）
     @GetMapping("/list")
     public Result getNewsList(
@@ -370,6 +338,51 @@ public class ArticalController {
         catch (Exception e){
             e.printStackTrace();
             return Result.fail("删除失败: " + e.getMessage());
+        }
+    }
+
+    // ==================== 新闻编辑功能 ====================
+    @PutMapping("/update/{id}")
+    public Result updateNews(@PathVariable int id, @RequestBody news newsData){
+        try{
+            Map<String, Object> map = ThreadLocalUtil.get();
+            String username = (String) map.get("username");
+            user u1 = userService.getOne(new QueryWrapper<user>().eq("username", username));
+            if(u1 == null){
+                return Result.fail("用户不存在，请重新登录");
+            }
+
+            news newsItem = articalService.getById(id);
+            if (newsItem == null) {
+                return Result.fail("新闻不存在");
+            }
+
+            // 权限判断：只能编辑自己发布的新闻
+            if (newsItem.getAuthorId() != u1.getId()) {
+                return Result.fail("您没有权限编辑此新闻");
+            }
+
+            // 更新新闻内容
+            if (newsData.getTitle() != null && !newsData.getTitle().trim().isEmpty()) {
+                newsItem.setTitle(newsData.getTitle().trim());
+            }
+            if (newsData.getContent() != null && !newsData.getContent().trim().isEmpty()) {
+                newsItem.setContent(newsData.getContent().trim());
+            }
+            if (newsData.getCategory() != null && !newsData.getCategory().trim().isEmpty()) {
+                newsItem.setCategory(newsData.getCategory().trim());
+            }
+
+            // 编辑后重置为待审核状态
+            newsItem.setStatus(0);
+
+            articalService.updateById(newsItem);
+
+            return Result.success("新闻编辑成功，请等待管理员审核");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return Result.fail("编辑失败: " + e.getMessage());
         }
     }
 

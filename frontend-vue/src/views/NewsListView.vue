@@ -10,9 +10,8 @@
           <template v-if="auth.isAuthenticated">
             <router-link to="/" class="nav-link">首页</router-link>
             <router-link to="/news" class="nav-link active">新闻列表</router-link>
-            <router-link v-if="auth.role === '2' || auth.role === '3'" to="/upload" class="nav-link">上传新闻</router-link>
             <router-link v-if="auth.role === '3'" to="/admin/news" class="nav-link">管理新闻</router-link>
-            <router-link v-if="auth.role === '2' || auth.role === '3'" to="/my-news" class="nav-link">我的发布</router-link>
+            <router-link to="/my-news" class="nav-link">我的发布</router-link>
             <router-link to="/favorites" class="nav-link">我的收藏</router-link>
             <router-link to="/profile" class="nav-link">个人中心</router-link>
             <div class="user-info">
@@ -311,7 +310,7 @@ const formatTime = (time) => {
 // 退出登录
 const handleLogout = () => {
   auth.logout()
-  router.push('/login')
+  router.push('/')
 }
 
 // 查看新闻详情

@@ -116,15 +116,27 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20detailed%20breaking%20news%20background%20with%20clear%20headlines%20and%20modern%20news%20room%20atmosphere%20professional%20photography&image_size=landscape_16_9') no-repeat center center fixed;
+  background: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
   background-size: cover;
 }
 
+.login-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
+
 .login-form {
-  background: white;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 400px;
 }

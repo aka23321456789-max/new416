@@ -8,10 +8,9 @@
         </div>
         <div class="navbar-menu">
           <router-link to="/" class="nav-link">首页</router-link>
-          <!-- 发布者和管理员可以上传新闻 -->
-          <router-link v-if="auth.role === '2' || auth.role === '3'" to="/upload" class="nav-link">上传新闻</router-link>
           <!-- 管理员可以管理新闻 -->
           <router-link v-if="auth.role === '3'" to="/admin/news" class="nav-link">管理新闻</router-link>
+          <router-link to="/my-news" class="nav-link">我的发布</router-link>
           <router-link to="/favorites" class="nav-link">我的收藏</router-link>
           <router-link to="/profile" class="nav-link active">个人中心</router-link>
           <div class="user-info">
@@ -80,7 +79,7 @@ export default {
 
     const handleLogout = () => {
       auth.logout()
-      router.push('/login')
+      router.push('/')
     }
 
     return {

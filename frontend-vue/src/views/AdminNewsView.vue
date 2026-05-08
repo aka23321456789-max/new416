@@ -8,8 +8,8 @@
         </div>
         <div class="navbar-menu">
           <router-link to="/" class="nav-link">首页</router-link>
-          <router-link to="/upload" class="nav-link">上传新闻</router-link>
           <router-link to="/admin/news" class="nav-link active">管理新闻</router-link>
+          <router-link to="/my-news" class="nav-link">我的发布</router-link>
           <router-link to="/favorites" class="nav-link">我的收藏</router-link>
           <router-link to="/profile" class="nav-link">个人中心</router-link>
           <div class="user-info">
@@ -40,42 +40,39 @@
         <!-- 待审核新闻列表 -->
         <div v-else-if="pendingNews.length > 0" class="news-list">
           <h3>待审核新闻</h3>
-          <div class="news-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>标题</th>
-                  <th>分类</th>
-                  <th>作者ID</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="news in pendingNews" :key="news.id">
-                  <td>{{ news.id }}</td>
-                  <td class="news-title">{{ news.title }}</td>
-                  <td>{{ news.category }}</td>
-                  <td>{{ news.authorId }}</td>
-                  <td class="actions">
-                    <button 
-                      class="btn btn-success" 
-                      @click="reviewNews(news.id, 1)"
-                      :disabled="reviewing === news.id"
-                    >
-                      {{ reviewing === news.id ? '处理中...' : '通过' }}
-                    </button>
-                    <button 
-                      class="btn btn-danger" 
-                      @click="reviewNews(news.id, 2)"
-                      :disabled="reviewing === news.id"
-                    >
-                      {{ reviewing === news.id ? '处理中...' : '拒绝' }}
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="news-items">
+            <div v-for="news in pendingNews" :key="news.id" class="news-item">
+              <div class="news-header">
+                <div class="news-info">
+                  <h4 class="news-title">{{ news.title }}</h4>
+                  <div class="news-meta">
+                    <span class="news-id">ID: {{ news.id }}</span>
+                    <span class="news-category">{{ news.category }}</span>
+                    <span class="news-author">作者ID: {{ news.authorId }}</span>
+                    <span class="news-time" v-if="news.createTime">{{ formatTime(news.createTime) }}</span>
+                  </div>
+                </div>
+                <div class="news-actions">
+                  <button 
+                    class="btn btn-success" 
+                    @click="reviewNews(news.id, 1)"
+                    :disabled="reviewing === news.id"
+                  >
+                    {{ reviewing === news.id ? '处理中...' : '通过' }}
+                  </button>
+                  <button 
+                    class="btn btn-danger" 
+                    @click="reviewNews(news.id, 2)"
+                    :disabled="reviewing === news.id"
+                  >
+                    {{ reviewing === news.id ? '处理中...' : '拒绝' }}
+                  </button>
+                </div>
+              </div>
+              <div class="news-content">
+                <p>{{ news.content }}</p>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -132,10 +129,23 @@ const reviewNews = async (id, status) => {
   }
 }
 
+// 格式化时间
+const formatTime = (time) => {
+  if (!time) return ''
+  const date = new Date(time)
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
 // 退出登录
 const handleLogout = () => {
   auth.logout()
-  router.push('/login')
+  router.push('/')
 }
 
 // 页面加载时获取待审核新闻
@@ -301,45 +311,86 @@ onMounted(() => {
   color: #666;
 }
 
-/* 新闻表格 */
-.news-table {
-  overflow-x: auto;
+/* 新闻列表 */
+.news-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.news-table table {
-  width: 100%;
-  border-collapse: collapse;
+.news-item {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
 }
 
-.news-table th,
-.news-table td {
-  padding: 1rem;
-  text-align: left;
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid #e9ecef;
 }
 
-.news-table th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-  color: #333;
-}
-
-.news-table tr:hover {
-  background-color: #f8f9fa;
+.news-info {
+  flex: 1;
 }
 
 .news-title {
-  font-weight: 500;
   color: #333;
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
 }
 
-.actions {
+.news-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.news-id {
+  background-color: #e9ecef;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.news-category {
+  background-color: #667eea;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.news-author {
+  font-style: italic;
+}
+
+.news-time {
+  color: #999;
+}
+
+.news-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.news-content {
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.news-content p {
+  margin: 0;
 }
 
 .btn {
@@ -397,21 +448,18 @@ onMounted(() => {
     padding: 1.5rem;
   }
 
-  .news-table {
-    font-size: 0.875rem;
-  }
-
-  .news-table th,
-  .news-table td {
-    padding: 0.75rem;
-  }
-
-  .actions {
+  .news-header {
     flex-direction: column;
+    gap: 1rem;
   }
 
-  .btn {
+  .news-actions {
     width: 100%;
+    justify-content: flex-end;
+  }
+
+  .news-meta {
+    gap: 0.5rem;
   }
 }
 </style>
